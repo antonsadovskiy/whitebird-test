@@ -1,0 +1,12 @@
+.layout {
+  min-height: calc(100vh - 64px);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.headerTitle {
+  color: white
+}

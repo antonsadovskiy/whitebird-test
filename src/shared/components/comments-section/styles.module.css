@@ -1,0 +1,31 @@
+.comments {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 16px 10px;
+    position: relative;
+    overflow: scroll;
+    height: 100%;
+}
+
+.list {
+    height: 230px;
+    overflow: scroll;
+    position: relative;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.addComment {
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    position: absolute;
+    bottom: 10px;
+    width: calc(100% - 32px);
+}
+.sendButton {
+    align-self: flex-end;
+}
