@@ -18,6 +18,7 @@ type ActionsType = {
   setLikeToPost: (postId: number) => void;
   setDislikeToPost: (postId: number) => void;
   addPost: (userId: number, title: string, body: string) => void;
+  removePost: (id: number) => void;
   setCommentsToPost: (postId: number, comments: CommentType[]) => void;
   addComment: (postId: number, body: string, email: string) => void;
 };
@@ -33,75 +34,64 @@ export const createPostsSlice: StateCreator<
   posts: [],
   setPosts: (posts) => set(() => ({ posts })),
   setLikeToPost: (postId) =>
-    set((state) => {
-      return {
-        ...state,
-        posts: state.posts.map((post) =>
-          post.id === postId
-            ? { ...post, isLiked: !post.isLiked, isDisliked: false }
-            : post,
-        ),
-      };
-    }),
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post.id === postId
+          ? { ...post, isLiked: !post.isLiked, isDisliked: false }
+          : post,
+      ),
+    })),
   setDislikeToPost: (postId) =>
-    set((state) => {
-      return {
-        ...state,
-        posts: state.posts.map((post) =>
-          post.id === postId
-            ? { ...post, isDisliked: !post.isDisliked, isLiked: false }
-            : post,
-        ),
-      };
-    }),
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post.id === postId
+          ? { ...post, isDisliked: !post.isDisliked, isLiked: false }
+          : post,
+      ),
+    })),
   addPost: (userId, title, body) =>
-    set((state) => {
-      return {
-        ...state,
-        posts: [
-          {
-            id: state.posts.length + 1,
-            body,
-            title,
-            isLiked: false,
-            isDisliked: false,
-            comments: [],
-            userId,
-          },
-          ...state.posts,
-        ],
-      };
-    }),
+    set((state) => ({
+      posts: [
+        {
+          id: state.posts.length + 1,
+          body,
+          title,
+          isLiked: false,
+          isDisliked: false,
+          comments: [],
+          userId,
+        },
+        ...state.posts,
+      ],
+    })),
+  removePost: (id) =>
+    set((state) => ({
+      posts: state.posts.filter((post) => post.id !== id),
+    })),
   setCommentsToPost: (postId, comments) =>
-    set((state) => {
-      return {
-        ...state,
-        posts: state.posts.map((post) =>
-          post.id === postId ? { ...post, comments } : post,
-        ),
-      };
-    }),
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post.id === postId ? { ...post, comments } : post,
+      ),
+    })),
   addComment: (postId, body, email) =>
-    set((state) => {
-      return {
-        ...state,
-        posts: state.posts.map((post) =>
-          post.id === postId
-            ? {
-                ...post,
-                comments: [
-                  {
-                    id: [post.comments].length + 1,
-                    body,
-                    email,
-                    postId,
-                    name: 'new post',
-                  },
-                  ...post.comments,
-                ],
-              }
-            : post,
-        ),
-      };
-    }),
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              comments: [
+                {
+                  id: [post.comments].length + 1,
+                  body,
+                  email,
+                  postId,
+                  name: 'new post',
+                },
+                ...post.comments,
+              ],
+            }
+          : post,
+      ),
+    })),
 });

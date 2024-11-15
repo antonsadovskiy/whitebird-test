@@ -13,6 +13,8 @@ export const usePost = () => {
   const setDislikeToPost = useAppStore((state) => state.setDislikeToPost);
   const setCommentsToPost = useAppStore((state) => state.setCommentsToPost);
   const addPost = useAppStore((state) => state.addPost);
+  const removePost = useAppStore((state) => state.removePost);
+  const toggleFavourite = useAppStore((state) => state.toggleFavourite);
 
   const [postsIdToShowComments, setPostsIdToShowComments] = useState<number[]>(
     [],
@@ -21,9 +23,19 @@ export const usePost = () => {
     number[]
   >([]);
 
-  const onAddFavouriteHandler = useCallback(() => {
-    // console.log(postId);
-  }, []);
+  const onRemovePostHandler = useCallback(
+    (id: number) => {
+      removePost(id);
+    },
+    [removePost],
+  );
+
+  const onToggleFavourite = useCallback(
+    (postId: number) => {
+      toggleFavourite(postId);
+    },
+    [toggleFavourite],
+  );
 
   const onNavigateHandler = useCallback(
     (id: number) => {
@@ -79,9 +91,10 @@ export const usePost = () => {
   );
 
   return {
-    onAddFavouriteHandler,
+    onToggleFavourite,
     onNavigateHandler,
     onLikeHandler,
+    onRemovePostHandler,
     onDislikeHandler,
     onShowCommentsHandler,
     addPost,

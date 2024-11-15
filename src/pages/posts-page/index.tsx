@@ -22,6 +22,8 @@ type AddNewPostType = z.infer<typeof schema>;
 
 export const PostsPage = () => {
   const posts = useAppStore((state) => state.posts);
+  const user = useAppStore((state) => state.userData);
+  const favourites = useAppStore((state) => state.favourites);
 
   const { handleSubmit, control, reset } = useForm<AddNewPostType>({
     resolver: zodResolver(schema),
@@ -31,7 +33,8 @@ export const PostsPage = () => {
     onNavigateHandler,
     onDislikeHandler,
     onShowCommentsHandler,
-    onAddFavouriteHandler,
+    onRemovePostHandler,
+    onToggleFavourite,
     addPost,
     postsIdLoadingComments,
     postsIdToShowComments,
@@ -40,10 +43,12 @@ export const PostsPage = () => {
 
   const onSubmitHandler: SubmitHandler<AddNewPostType> = useCallback(
     (data) => {
-      addPost(1, data.title, data.body);
-      reset();
+      if (user && user.id) {
+        addPost(user.id, data.title, data.body);
+        reset();
+      }
     },
-    [addPost, reset],
+    [addPost, reset, user],
   );
 
   return (
@@ -83,15 +88,22 @@ export const PostsPage = () => {
 
           const isLoadingComments = postsIdLoadingComments.includes(item.id);
 
+          const isInFavourites = favourites.includes(item.id);
+
+          const isMyPost = item.userId === user?.id;
+
           return (
             <Post
-              onAddFavouriteHandler={onAddFavouriteHandler}
+              onToggleFavourite={onToggleFavourite}
+              isInFavourites={isInFavourites}
               onLikeHandler={onLikeHandler}
               onDislikeHandler={onDislikeHandler}
               onNavigateHandler={onNavigateHandler}
               onShowCommentsHandler={onShowCommentsHandler}
               className={commentsStyles}
               isLoadingComments={isLoadingComments}
+              isMyPost={isMyPost}
+              onRemovePostHandler={onRemovePostHandler}
               {...item}
             />
           );

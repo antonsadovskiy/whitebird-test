@@ -19,16 +19,18 @@ export const CommentsSection = ({
 }: CommentsSectionPropsType) => {
   const lastElemRef = useRef<HTMLDivElement>(null);
 
+  const user = useAppStore((state) => state.userData);
+
   const [commentText, setCommentText] = useState('');
 
   const addComment = useAppStore((state) => state.addComment);
 
   const sendMessage = useCallback(() => {
-    if (commentText) {
-      addComment(postId, commentText, 'email');
+    if (commentText && user && user.email) {
+      addComment(postId, commentText, user.email);
       setCommentText('');
     }
-  }, [addComment, commentText, postId]);
+  }, [addComment, commentText, postId, user]);
 
   const onKeyDownHandler = useCallback(
     (event: React.KeyboardEvent<HTMLTextAreaElement>) => {

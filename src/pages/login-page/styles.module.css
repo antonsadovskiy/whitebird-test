@@ -1,0 +1,13 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    align-self: center;
+    justify-self: center;
+    height: 100%;
+}
+
+.title {
+    text-align: center;
+}

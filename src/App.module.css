@@ -10,3 +10,16 @@
 .headerTitle {
   color: white
 }
+
+.content {
+  padding: 24px;
+  margin: 0;
+}
+
+.authPageContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}

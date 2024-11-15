@@ -9,10 +9,13 @@ import { CommentsSection } from '@/shared/components/comments-section';
 import { ExtendedPostType } from '@/entities/store/posts.ts';
 
 type PostPropsType = {
-  onAddFavouriteHandler: (id: number) => void;
+  onToggleFavourite: (id: number) => void;
+  isInFavourites: boolean;
   onLikeHandler: (id: number) => void;
   onDislikeHandler: (id: number) => void;
   onShowCommentsHandler: (id: number) => void;
+  onRemovePostHandler: (id: number) => void;
+  isMyPost: boolean;
   onNavigateHandler?: (id: number) => void;
   isLoadingComments?: boolean;
   className?: string;
@@ -22,11 +25,14 @@ export const Post = ({
   isLiked,
   id,
   isDisliked,
+  isInFavourites,
   userId,
+  onRemovePostHandler,
   comments,
   body,
   title,
-  onAddFavouriteHandler,
+  isMyPost,
+  onToggleFavourite,
   onNavigateHandler,
   onLikeHandler,
   onDislikeHandler,
@@ -42,8 +48,8 @@ export const Post = ({
         actions={[
           <FavouriteIcon
             key="favourites"
-            isFavourite={true}
-            onClick={() => onAddFavouriteHandler(id)}
+            isFavourite={isInFavourites}
+            onClick={() => onToggleFavourite(id)}
             className={styles.actionIcon}
           />,
           <LikeIcon
@@ -68,12 +74,13 @@ export const Post = ({
             />
           ),
           onNavigateHandler && (
-            <Button
-              key="navigate"
-              onClick={() => onNavigateHandler(id)}
-              className={styles.actionIcon}
-            >
+            <Button key="navigate" onClick={() => onNavigateHandler(id)}>
               Read more
+            </Button>
+          ),
+          isMyPost && (
+            <Button danger key="delete" onClick={() => onRemovePostHandler(id)}>
+              Delete
             </Button>
           ),
         ]}
