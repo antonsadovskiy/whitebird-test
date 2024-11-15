@@ -20,6 +20,7 @@ type StateType = {
 
 type ActionsType = {
   setUserData: (userData: UserDataType) => void;
+  updateUserData: (userData: Omit<UserDataType, 'id' | 'isAdmin'>) => void;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   toggleFavourite: (id: number) => void;
   setUsers: (users: UserType[]) => void;
@@ -35,6 +36,15 @@ export const createAppSlice: StateCreator<
 > = (set) => ({
   userData: undefined,
   setUserData: (userData) => set(() => ({ userData })),
+  updateUserData: (userData) =>
+    set((state) => ({
+      userData: state.userData
+        ? {
+            ...state.userData,
+            ...userData,
+          }
+        : state.userData,
+    })),
   isLoggedIn: false,
   setIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
   favourites: [],

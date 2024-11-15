@@ -13,6 +13,8 @@ import { PostPage } from '@/pages/post-page';
 import { LoginPage } from '@/pages/login-page';
 import { PrivateRoutes } from '@/app/router/private-routes';
 import { UsersPage } from '@/pages/users-page';
+import { UserPostsPage } from '@/pages/user-posts-page';
+import { AccountPage } from '@/pages/account-page';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +27,8 @@ export const router = createBrowserRouter(
         <Route path={routes.posts} element={<PostsPage />} />
         <Route path={routes.post} element={<PostPage />} />
         <Route path={routes.users} element={<UsersPage />} />
+        <Route path={routes.userPosts} element={<UserPostsPage />} />
+        <Route path={routes.account} element={<AccountPage />} />
       </Route>
     </Route>,
   ),

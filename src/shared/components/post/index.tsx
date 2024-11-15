@@ -2,7 +2,8 @@ import { Avatar, Button, List } from 'antd';
 import classNames from 'classnames';
 import { LoadingOutlined, MessageOutlined } from '@ant-design/icons';
 
-import styles from '@/pages/posts-page/styles.module.css';
+import styles from './styles.module.css';
+
 import { FavouriteIcon } from '@/shared/components/favourite-icon';
 import { LikeIcon } from '@/shared/components/like-icon';
 import { CommentsSection } from '@/shared/components/comments-section';

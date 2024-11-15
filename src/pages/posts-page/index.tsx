@@ -1,7 +1,6 @@
-import { Button, Form, Input, List } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
-import { useCallback } from 'react';
-import classNames from 'classnames';
+import { useCallback, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import * as z from 'zod';
@@ -10,8 +9,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import styles from './styles.module.css';
 
 import { useAppStore } from '@/entities/store';
-import { Post } from '@/shared/components/post';
 import { usePost } from '@/hooks/usePost.ts';
+import { PostsList } from '@/shared/components/posts-list';
 
 const schema = z.object({
   title: z.string(),
@@ -23,23 +22,15 @@ type AddNewPostType = z.infer<typeof schema>;
 export const PostsPage = () => {
   const posts = useAppStore((state) => state.posts);
   const user = useAppStore((state) => state.userData);
-  const favourites = useAppStore((state) => state.favourites);
+  const users = useAppStore((state) => state.users);
 
   const { handleSubmit, control, reset } = useForm<AddNewPostType>({
     resolver: zodResolver(schema),
   });
 
-  const {
-    onNavigateHandler,
-    onDislikeHandler,
-    onShowCommentsHandler,
-    onRemovePostHandler,
-    onToggleFavourite,
-    addPost,
-    postsIdLoadingComments,
-    postsIdToShowComments,
-    onLikeHandler,
-  } = usePost();
+  const [selectedUsersIds, setSelectedUsersIds] = useState<number[]>([]);
+
+  const { addPost } = usePost();
 
   const onSubmitHandler: SubmitHandler<AddNewPostType> = useCallback(
     (data) => {
@@ -50,6 +41,37 @@ export const PostsPage = () => {
     },
     [addPost, reset, user],
   );
+
+  const usersToSearch = useMemo(() => {
+    if (user) {
+      return [
+        ...users,
+        user && {
+          id: user.id,
+          name: user.name,
+          username: user.username,
+          email: user.email,
+        },
+      ]
+        .filter(Boolean)
+        .map((user) => ({
+          value: user.id,
+          label: user.name,
+        }));
+    }
+    return [];
+  }, [user, users]);
+
+  const filteredPosts = useMemo(() => {
+    if (selectedUsersIds.length === 0) {
+      return posts;
+    }
+    return posts.filter((post) => selectedUsersIds.includes(post.userId));
+  }, [posts, selectedUsersIds]);
+
+  const onChange = (value: number[]) => {
+    setSelectedUsersIds(value);
+  };
 
   return (
     <div className={styles.page}>
@@ -73,42 +95,15 @@ export const PostsPage = () => {
           Publish
         </Button>
       </Form>
-      <List
-        itemLayout="vertical"
-        size="small"
-        pagination={{ pageSize: 10 }}
-        dataSource={posts}
-        renderItem={(item) => {
-          const isCommentsVisible = postsIdToShowComments.includes(item.id);
-
-          const commentsStyles = classNames(styles.comments, {
-            [styles.commentsOpened]: isCommentsVisible,
-            [styles.commentsClosed]: !isCommentsVisible,
-          });
-
-          const isLoadingComments = postsIdLoadingComments.includes(item.id);
-
-          const isInFavourites = favourites.includes(item.id);
-
-          const isMyPost = item.userId === user?.id;
-
-          return (
-            <Post
-              onToggleFavourite={onToggleFavourite}
-              isInFavourites={isInFavourites}
-              onLikeHandler={onLikeHandler}
-              onDislikeHandler={onDislikeHandler}
-              onNavigateHandler={onNavigateHandler}
-              onShowCommentsHandler={onShowCommentsHandler}
-              className={commentsStyles}
-              isLoadingComments={isLoadingComments}
-              isMyPost={isMyPost}
-              onRemovePostHandler={onRemovePostHandler}
-              {...item}
-            />
-          );
-        }}
+      <Select
+        showSearch
+        mode="multiple"
+        placeholder="Select a user"
+        optionFilterProp="label"
+        onChange={onChange}
+        options={usersToSearch}
       />
+      <PostsList list={filteredPosts} />
     </div>
   );
 };

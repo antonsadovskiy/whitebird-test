@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 
 import { Posts } from '@/entities/api/posts';
 import { useAppStore } from '@/entities/store';
@@ -15,6 +16,7 @@ export const usePost = () => {
   const addPost = useAppStore((state) => state.addPost);
   const removePost = useAppStore((state) => state.removePost);
   const toggleFavourite = useAppStore((state) => state.toggleFavourite);
+  const favourites = useAppStore((state) => state.favourites);
 
   const [postsIdToShowComments, setPostsIdToShowComments] = useState<number[]>(
     [],
@@ -32,9 +34,17 @@ export const usePost = () => {
 
   const onToggleFavourite = useCallback(
     (postId: number) => {
+      const isFavourite = favourites.includes(postId);
+
+      if (isFavourite) {
+        message.success('Post removed from favourites');
+      } else {
+        message.success('Post added to favourites');
+      }
+
       toggleFavourite(postId);
     },
-    [toggleFavourite],
+    [favourites, toggleFavourite],
   );
 
   const onNavigateHandler = useCallback(

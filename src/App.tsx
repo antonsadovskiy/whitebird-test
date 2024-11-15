@@ -1,5 +1,10 @@
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  ScrollRestoration,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import Sider from 'antd/es/layout/Sider';
 import { Layout, Menu, MenuProps, theme, Typography } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
@@ -9,10 +14,8 @@ import styles from './App.module.css';
 
 import { Posts } from '@/entities/api/posts';
 import { useAppStore } from '@/entities/store';
-import { routesList } from '@/app/router/routes.ts';
+import { routes, routesList } from '@/app/router/routes.ts';
 import { Users } from '@/entities/api/users';
-
-const { Text } = Typography;
 
 const items: MenuProps['items'] = routesList.map((routeItem) => ({
   key: routeItem.link,
@@ -24,12 +27,12 @@ function App() {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const setPosts = useAppStore((state) => state.setPosts);
   const isLoggedIn = useAppStore((state) => state.isLoggedIn);
   const setUsers = useAppStore((state) => state.setUsers);
-  const userData = useAppStore((state) => state.userData);
 
   useEffect(() => {
     const fetchPostsData = async () => {
@@ -51,17 +54,22 @@ function App() {
       try {
         const usersData = await Users.getAllUsers();
 
-        setUsers(usersData);
+        setUsers(
+          usersData.map((user) => ({
+            id: user.id,
+            name: user.name,
+            username: user.username,
+            email: user.email,
+          })),
+        );
       } catch (e) {
         console.error(e);
       }
     };
 
-    if (userData) {
-      fetchPostsData();
-      fetchUsersData();
-    }
-  }, [setPosts, setUsers, userData]);
+    fetchPostsData();
+    fetchUsersData();
+  }, [setPosts, setUsers]);
 
   const navigateTo: MenuProps['onClick'] = (e) => {
     navigate(e.key);
@@ -69,13 +77,15 @@ function App() {
 
   const contentStyles = classNames({
     [styles.content]: isLoggedIn,
-    [styles.authPageContent]: !isLoggedIn,
+    [styles.centerContent]: !isLoggedIn || location.pathname === routes.account,
   });
 
   return (
     <Layout>
       <Header className={styles.header}>
-        <Text className={styles.headerTitle}>Whitebird.io Forum</Text>
+        <Typography.Text className={styles.headerTitle}>
+          Whitebird.io Forum
+        </Typography.Text>
       </Header>
       <Layout className={styles.layout}>
         {isLoggedIn && (
@@ -83,7 +93,7 @@ function App() {
             <Menu
               onClick={navigateTo}
               mode="inline"
-              defaultSelectedKeys={['Posts']}
+              defaultSelectedKeys={[routes.posts]}
               className={styles.menu}
               items={items}
             />
@@ -98,6 +108,7 @@ function App() {
             }}
           >
             <Outlet />
+            <ScrollRestoration />
           </Content>
         </Layout>
       </Layout>
