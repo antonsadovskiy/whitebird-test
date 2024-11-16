@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 
 type FavouriteIconPropsType = {
   isFavourite: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
 };
 

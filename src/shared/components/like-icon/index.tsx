@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 
 type LikeIconPropsType = {
   isLiked: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
 };
 

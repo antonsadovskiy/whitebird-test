@@ -55,7 +55,7 @@ export const CommentsSection = ({
           return (
             <CommentItem
               ref={isLast ? lastElemRef : null}
-              key={comment.id}
+              key={`${postId}-${comment.id}`}
               {...comment}
             />
           );

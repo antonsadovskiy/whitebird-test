@@ -6,7 +6,7 @@ import { CommentType, PostType } from '@/entities/api/posts/types.ts';
 export type ExtendedPostType = {
   isLiked: boolean;
   isDisliked: boolean;
-  comments: CommentType[];
+  comments?: CommentType[];
 } & PostType;
 
 type StateType = {
@@ -82,13 +82,13 @@ export const createPostsSlice: StateCreator<
               ...post,
               comments: [
                 {
-                  id: [post.comments].length + 1,
+                  id: (post.comments?.length ?? 0) + 1,
                   body,
                   email,
                   postId,
                   name: 'new post',
                 },
-                ...post.comments,
+                ...(post.comments ?? []),
               ],
             }
           : post,

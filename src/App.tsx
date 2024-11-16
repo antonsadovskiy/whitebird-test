@@ -43,7 +43,6 @@ function App() {
             ...post,
             isLiked: false,
             isDisliked: false,
-            comments: [],
           })),
         );
       } catch (e) {

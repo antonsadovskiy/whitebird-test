@@ -74,7 +74,7 @@ export const usePost = () => {
 
       // сделано для того, чтобы не терялись добавленные пользотелем комментарии после повторной попытки открытия списка комментариев
       if (!postsIdToShowComments.includes(postId)) {
-        if (post?.comments.length === 0) {
+        if (post?.comments === undefined) {
           try {
             setPostsIdLoadingComments((prev) => [...prev, postId]);
 

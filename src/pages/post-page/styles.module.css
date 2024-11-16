@@ -1,0 +1,23 @@
+.page {
+
+}
+
+.postBody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.buttons {
+    display: flex;
+    gap: 5px;
+}
+.dislike {
+    rotate: 180deg;
+}
+
+.addComment {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

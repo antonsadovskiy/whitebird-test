@@ -45,7 +45,7 @@ export const Post = ({
     <div className={styles.postContainer}>
       <List.Item
         className={styles.post}
-        key={title}
+        key={id}
         actions={[
           <FavouriteIcon
             key="favourites"
