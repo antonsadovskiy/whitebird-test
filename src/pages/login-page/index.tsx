@@ -27,9 +27,7 @@ export const LoginPage = () => {
 
   const { control, handleSubmit, watch } = useForm<LoginType>({
     defaultValues: {
-      isAdmin: true,
-      email: 'antonsadovskiy6@gmail.com',
-      password: '123',
+      isAdmin: false,
     },
     resolver: zodResolver(schema),
   });
