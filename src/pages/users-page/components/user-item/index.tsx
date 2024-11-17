@@ -1,4 +1,4 @@
-import { Avatar, Button, Form, Input, List, Typography } from 'antd';
+import { Avatar, Button, Form, Input, List, message, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import * as z from 'zod';
@@ -40,6 +40,7 @@ export const UserItem = ({ id, name, username, email }: UserType) => {
   const onSubmitHandler: SubmitHandler<EditUserType> = useCallback(
     (data) => {
       updateUserInfo(id, data);
+      message.success('User updated');
       setIsEditing(false);
       reset();
     },
