@@ -2,6 +2,10 @@
   min-height: calc(100vh - 64px);
 }
 
+.childrenLayout {
+  padding: 0 24px 24px;
+}
+
 .header {
   display: flex;
   align-items: center;

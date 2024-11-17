@@ -1,0 +1,10 @@
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.editButtons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}

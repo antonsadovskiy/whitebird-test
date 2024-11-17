@@ -93,16 +93,16 @@ export const PostPage = () => {
         <Card title={post.title} bordered>
           <div className={styles.postBody}>
             <Typography.Text>{post.body}</Typography.Text>
+            <ActionButtons
+              postId={Number(postId)}
+              onLikeHandler={onLikeHandler}
+              onDislikeHandler={onDislikeHandler}
+              onToggleFavourite={onToggleFavourite}
+              isLiked={post.isLiked}
+              isDisliked={post.isDisliked}
+              isInFavourites={isInFavourites}
+            />
           </div>
-          <ActionButtons
-            postId={Number(postId)}
-            onLikeHandler={onLikeHandler}
-            onDislikeHandler={onDislikeHandler}
-            onToggleFavourite={onToggleFavourite}
-            isLiked={post.isLiked}
-            isDisliked={post.isDisliked}
-            isInFavourites={isInFavourites}
-          />
         </Card>
       )}
       <div>

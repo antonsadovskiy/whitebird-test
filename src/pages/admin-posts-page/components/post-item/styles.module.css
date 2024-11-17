@@ -1,0 +1,9 @@
+.item {
+    cursor: grab;
+    border: 1px dashed #d9d9d9;
+    border-radius: 10px;
+}
+
+.itemDragging {
+    opacity: 0;
+}

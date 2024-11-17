@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   Outlet,
   ScrollRestoration,
@@ -17,11 +17,6 @@ import { useAppStore } from '@/entities/store';
 import { routes, routesList } from '@/app/router/routes.ts';
 import { Users } from '@/entities/api/users';
 
-const items: MenuProps['items'] = routesList.map((routeItem) => ({
-  key: routeItem.link,
-  label: routeItem.label,
-}));
-
 function App() {
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -33,6 +28,7 @@ function App() {
   const setPosts = useAppStore((state) => state.setPosts);
   const isLoggedIn = useAppStore((state) => state.isLoggedIn);
   const setUsers = useAppStore((state) => state.setUsers);
+  const isAdmin = useAppStore((state) => state.userData?.isAdmin);
 
   useEffect(() => {
     const fetchPostsData = async () => {
@@ -74,6 +70,15 @@ function App() {
     navigate(e.key);
   };
 
+  const menuItems = useMemo(() => {
+    const items: MenuProps['items'] = routesList.map((routeItem) => ({
+      key: routeItem.link,
+      label: routeItem.label,
+    }));
+
+    return isAdmin ? items : items.filter((item) => item?.key !== routes.admin);
+  }, [isAdmin]);
+
   const contentStyles = classNames({
     [styles.content]: isLoggedIn,
     [styles.centerContent]: !isLoggedIn || location.pathname === routes.account,
@@ -92,13 +97,13 @@ function App() {
             <Menu
               onClick={navigateTo}
               mode="inline"
-              defaultSelectedKeys={[routes.posts]}
+              selectedKeys={[location.pathname]}
               className={styles.menu}
-              items={items}
+              items={menuItems}
             />
           </Sider>
         )}
-        <Layout style={{ padding: '0 24px 24px' }}>
+        <Layout className={styles.childrenLayout}>
           <Content
             className={contentStyles}
             style={{

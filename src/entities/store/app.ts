@@ -24,6 +24,10 @@ type ActionsType = {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   toggleFavourite: (id: number) => void;
   setUsers: (users: UserType[]) => void;
+  updateUserInfo: (
+    id: number,
+    data: Omit<UserDataType, 'id' | 'isAdmin' | 'name'>,
+  ) => void;
 };
 
 export type AppSliceType = StateType & ActionsType;
@@ -44,6 +48,12 @@ export const createAppSlice: StateCreator<
             ...userData,
           }
         : state.userData,
+    })),
+  updateUserInfo: (id, data) =>
+    set((state) => ({
+      users: state.users.map((user) =>
+        user.id === id ? { ...user, ...data } : user,
+      ),
     })),
   isLoggedIn: false,
   setIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),

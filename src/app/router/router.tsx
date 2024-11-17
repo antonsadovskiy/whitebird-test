@@ -15,6 +15,8 @@ import { PrivateRoutes } from '@/app/router/private-routes';
 import { UsersPage } from '@/pages/users-page';
 import { UserPostsPage } from '@/pages/user-posts-page';
 import { AccountPage } from '@/pages/account-page';
+import { AdminPage } from '@/pages/admin-page';
+import { AdminPostsPage } from '@/pages/admin-posts-page';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +31,8 @@ export const router = createBrowserRouter(
         <Route path={routes.users} element={<UsersPage />} />
         <Route path={routes.userPosts} element={<UserPostsPage />} />
         <Route path={routes.account} element={<AccountPage />} />
+        <Route path={routes.admin} element={<AdminPage />} />
+        <Route path={routes.adminPosts} element={<AdminPostsPage />} />
       </Route>
     </Route>,
   ),

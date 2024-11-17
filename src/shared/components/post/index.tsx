@@ -16,7 +16,7 @@ type PostPropsType = {
   onDislikeHandler: (id: number) => void;
   onShowCommentsHandler: (id: number) => void;
   onRemovePostHandler: (id: number) => void;
-  isMyPost: boolean;
+  isMyPost?: boolean;
   onNavigateHandler?: (id: number) => void;
   isLoadingComments?: boolean;
   className?: string;

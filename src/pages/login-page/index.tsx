@@ -25,9 +25,11 @@ type LoginType = z.infer<typeof schema>;
 export const LoginPage = () => {
   const navigate = useNavigate();
 
-  const { control, handleSubmit } = useForm<LoginType>({
+  const { control, handleSubmit, watch } = useForm<LoginType>({
     defaultValues: {
-      isAdmin: false,
+      isAdmin: true,
+      email: 'antonsadovskiy6@gmail.com',
+      password: '123',
     },
     resolver: zodResolver(schema),
   });
@@ -63,7 +65,7 @@ export const LoginPage = () => {
         <Input.Password placeholder="Password" />
       </FormItem>
       <FormItem control={control} name="isAdmin">
-        <Checkbox>As admin</Checkbox>
+        <Checkbox checked={watch('isAdmin')}>As admin</Checkbox>
       </FormItem>
       <Button type="primary" htmlType="submit">
         Login
