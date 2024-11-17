@@ -7,7 +7,7 @@ import {
 
 import { routes } from './routes.ts';
 
-import App from '@/App.tsx';
+import App from '@/app/App.tsx';
 import { PostsPage } from '@/pages/posts-page';
 import { PostPage } from '@/pages/post-page';
 import { LoginPage } from '@/pages/login-page';
